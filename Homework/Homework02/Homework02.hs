@@ -3,14 +3,25 @@
 -- Add the type signatures for the functions below and then remove the comments and try to compile.
 -- (Use the types presented in the lecture.)
 
--- f1 x y z = x ** (y/z)
+f1 :: Double -> Double -> Double -> Double
+f1 x y z = x ** (y/z)
+-- >>> f1 3 2 1
+-- 9.0
 
--- f2 x y z = sqrt (x/y - z)
+f2 :: Double -> Double -> Double -> Double
+f2 x y z = sqrt (x/y - z)
+-- >>> f2 4 1 0
+-- 2.0
 
--- f3 x y = [x == True] ++ [y]
+f3 :: Bool -> Bool -> [Bool]
+f3 x y = [x == True] ++ [y]
+-- >>> f3 False True
+-- [False,True]
 
--- f4 x y z = x == (y ++ z)
-
+f4 :: Eq e => [e] -> [e] -> [e] -> Bool
+f4 x y z = x == (y ++ z)
+-- >>> f4 [1,2] [1] [2]
+-- True
 
 -- Question 2
 -- Why should we define type signatures of functions? How can they help you? How can they help others?
