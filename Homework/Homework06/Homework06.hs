@@ -5,6 +5,10 @@
 -- >>> repeat 17
 --[17,17,17,17,17,17,17,17,17...
 
+q1 :: t -> [t]
+q1 v = v : (q1 v)
+-- >>> take 9 $ q1 17
+-- [17,17,17,17,17,17,17,17,17]
 
 -- Question 2
 -- Using the `repeat'` function and the `take` function we defined in the lesson (comes with Haskell),
@@ -18,6 +22,15 @@
 -- >>> replicate 4 True
 -- [True,True,True,True]
 
+q2 n x
+    | n < 1     = []
+    | otherwise = x : (q2 (n - 1) x)
+-- >>> q2 0 True
+-- >>> q2 (-1) True
+-- >>> q2 4 True
+-- []
+-- []
+-- [True,True,True,True]
 
 -- Question 3
 -- Write a function called `concat'` that concatenates a list of lists.
@@ -25,6 +38,11 @@
 -- >>> concat' [[1,2],[3],[4,5,6]]
 -- [1,2,3,4,5,6]
 
+-- >>> q3 [[1,2],[3],[4,5,6]]
+-- [1,2,3,4,5,6]
+q3 :: [[a]] -> [a]
+q3 []      = []
+q3 (a : z) = a ++ q3 z
 
 -- Question 4
 -- Write a function called `zip'` that takes two lists and returns a list of
@@ -45,7 +63,10 @@
 -- >>> zip' [1..] []
 -- []
 
-
+q4 :: [a] -> [b] -> [(a, b)]
+q4 [] _          = []
+q4 _ []          = []
+q4 (a:az) (b:bz) = (a, b) : q4 az bz
 
 -- Question 5
 -- Create a function called `zipWith'` that generalises `zip'` by zipping with a
@@ -60,6 +81,10 @@
 -- >>> zipWith (+) [1, 2, 3] [4, 5, 6]
 -- [5,7,9]
 
+q5 :: (a -> b -> c) -> [a] -> [b] -> [c]
+q5 _ [] _          = []
+q5 _ _ []          = []
+q5 f (x:xs) (y:ys) = f x y : q5 f xs ys
 
 -- Question 6
 -- Write a function called `takeWhile'` that takes a precate and a list and
@@ -72,11 +97,38 @@
 -- >>> takeWhile (< 0) [1,2,3]
 -- []
 
+q6 :: (a -> Bool) -> [a] -> [a]
+q6 _ []    = []
+q6 f (a:z) = if f a
+    then a : q6 f z
+    else []
 
 -- Question 7 (More difficult)
 -- Write a function that takes in an integer n, calculates the factorial n! and
 -- returns a string in the form of 1*2* ... *n = n! where n! is the actual result.
 
+q7factorial :: Integer -> Integer
+q7factorial n
+    | n < 2     = 1
+    | otherwise = n * q7factorial (n - 1)
+
+q7string :: Integer -> String
+q7string n
+    | n < 2     = "1"
+    | otherwise = q7string (n - 1) ++ "*" ++ show n
+
+q7 :: Integer -> String
+q7 n = q7string n ++ " = " ++ show (q7factorial n)
+-- >>> q7 3
+-- "1*2*3 = 6"
+-- >>> q7 2
+-- >>> q7 1
+-- >>> q7 0
+-- >>> q7 (-1)
+-- "1*2 = 2"
+-- "1 = 1"
+-- "1 = 1"
+-- "1 = 1"
 
 -- Question 8
 -- Below you have defined some beer prices in bevogBeerPrices and your order list in
@@ -100,3 +152,11 @@ orderList =
 
 deliveryCost :: Double
 deliveryCost = 8.50
+
+q8 :: [(String, Double)] -> Double
+q8 []            = deliveryCost
+q8 ((b, q) : os) = q8 os + case lookup b bevogBeerPrices of
+    Just p -> q * p
+    _      -> 0
+-- >>> q8 orderList
+-- 126.0
