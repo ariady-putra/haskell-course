@@ -20,7 +20,27 @@
 votes :: [String]
 votes = ["Red", "Blue", "Green", "Blue", "Blue", "Red"]
 
+q5 :: String -> Int
+q5 = length . (`filter` votes) . (==)
+
+-- >>> q5 "Red"
+-- >>> q5 "Blue"
+-- >>> q5 "Green"
+-- 2
+-- 3
+-- 1
+
 -- Create a one-line function that filters `cars` by brand and then checks if there are any left.
 
 cars :: [(String,Int)]
 cars = [("Toyota",0), ("Nissan",3), ("Ford",1)]
+
+q6 :: String -> Maybe Int
+q6 = (`lookup` cars)
+
+-- >>> q6 "Toyota"
+-- >>> q6 "Nissan"
+-- >>> q6 "Ford"
+-- Just 0
+-- Just 3
+-- Just 1
