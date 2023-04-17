@@ -41,23 +41,28 @@ regions =
 -- and Rose wine with 12% alcohol.
 type Alcohol = Float
 
-data Wine
+data Kind
     = Red
     | White
     | Rose
     deriving (Show, Eq)
 
-data Kind = Kind Wine Alcohol
-instance Show Kind where
-    show (Kind w a) = show w ++ " Wine " ++ show a ++ "% alcohol"
+data Wine = Wine
+    { getKind    :: Kind
+    , getAlcohol :: Alcohol
+    }
+instance Show Wine where
+    show w =
+        show (getKind    w) ++ " Wine " ++
+        show (getAlcohol w) ++ "% alcohol"
 
-kinds :: [Kind]
-kinds =
-    [ (Kind Red   14.5)
-    , (Kind White 13  )
-    , (Kind Rose  12  )
+wines :: [Wine]
+wines =
+    [ (Wine Red   14.5)
+    , (Wine White 13  )
+    , (Wine Rose  12  )
     ]
--- >>> show kinds
+-- >>> show wines
 -- "[Red Wine 14.5% alcohol,White Wine 13.0% alcohol,Rose Wine 12.0% alcohol]"
 
 -- Question 4
@@ -65,51 +70,72 @@ kinds =
 -- Create a record type called "Label" that captures the grapes that are in a whine, the region its from,
 -- and it's kind. Notice that some wines are a blended combination of multiple grapes!
 -- Additionally, create for each of the described wine below a label.
-newtype Label = Label (String, [Grape], Region, Kind)
+data Label = Label
+    { getLabel  :: String
+    , getGrapes :: [Grape]
+    , getRegion :: Region
+    , getWine   :: Wine
+    }
 instance Show Label where
-    show (Label (l, g, (r, c), (Kind w a))) =
-        l ++ " is a " ++ show w ++ " wine from the region " ++ r ++ " in " ++ c ++ ". " ++
-        "It is made from " ++ show g ++ " and has an alcohol level of " ++ show a ++ "%"
+    show l =
+        let
+            label   = getLabel l
+            kind    = getKind wine
+            region  = fst . getRegion $ l
+            country = snd . getRegion $ l
+            grapes  = getGrapes l
+            alcohol = getAlcohol wine
+        in
+            label ++ " is a " ++ show kind ++ " wine from the region " ++ region ++ " in " ++ country ++ ". " ++
+            "It is made from " ++ show grapes ++ " and has an alcohol level of " ++ show alcohol ++ "%"
+        where
+            wine = getWine l
 
 -- Larrosa Rose is a rose wine from the region Rioja. It is made from the Garnacha grape and
 -- has a alcohol level of 14%.
 larrosaRose :: Label
 larrosaRose = Label
-    ( "Larrosa Rose"
-    , ["Garnacha"]
-    , ("Rioja", "Spain")
-    , (Kind Rose 14)
-    )
+    "Larrosa Rose"
+    ["Garnacha"]
+    ("Rioja", "Spain")
+    (Wine Rose 14)
 
 -- Castiglioni is a red wine from the region of Tuscany. It is made from the grape Sangiovese and
 -- has an alcohol level of 12.5%.
 castiglioni :: Label
 castiglioni = Label
-    ( "Castiglioni"
-    , ["Sangiovese"]
-    , ("Tuscany", "Italy")
-    , (Kind Red 12.5)
-    )
+    "Castiglioni"
+    ["Sangiovese"]
+    ("Tuscany", "Italy")
+    (Wine Red 12.5)
 
 -- Bordeaux is known for its red wine, these are mainly a blend between Cabernet-sauvignon and Merlot.
 -- Create a Label for the wine "Le Petit Haut Lafitte" that has an alcohol percentage 13.5%.
 lePetitHaitLafitte :: Label
 lePetitHaitLafitte = Label
-    ( "Le Petit Haut Lafitte"
-    , ["Cabernet-sauvignon", "Merlot"]
-    , ("Bordeaux", "France")
-    , (Kind Red 13.5)
-    )
+    "Le Petit Haut Lafitte"
+    ["Cabernet-sauvignon", "Merlot"]
+    ("Bordeaux", "France")
+    (Wine Red 13.5)
 
 -- Question 5
 -- Write a function `containsGrape` that takes a list of Labels and a Grape and returns a boolean.
 -- The function should check if the there exists a wine in the Label that contains this Grape.
 containsGrape :: [Label] -> Grape -> Bool
-containsGrape ((Label (_, gs, _, _)):ls) g =
-    if g `elem` gs
-        then True
-        else containsGrape ls g
-containsGrape _ _ = False
+-- containsGrape (l:ls) g =
+--     if elem g $ getGrapes l
+--         then True
+--         else containsGrape ls g
+-- containsGrape _ _ = False
+containsGrape ls g =
+    foldr
+        (\ l ls ->
+            if elem g $ getGrapes l
+                then True
+                else ls
+        )
+        False
+        ls
 
 -- This is a test list for the `containsGrape` function with an grape that is not in the list.
 grapeList :: [Label]
@@ -141,20 +167,29 @@ newGrape = "Pinot Noir"
 -- ["Le Petit Haut Lafitte"]
 -- ["Larrosa Rose"]
 getWinesByGrape :: [Label] -> Grape -> [String]
-getWinesByGrape ls g = map (\ (Label (l, _, _, _)) -> l) $
-    filter (\ (Label (_, gs, _, _)) -> g `elem` gs) ls
+getWinesByGrape ls g = map getLabel $
+    filter (elem g . getGrapes) ls
 
--- >>> getInformationByLabel grapeList newGrape
+-- >>> getInfoByLabel grapeList newGrape
 -- "Not found"
--- >>> getInformationByLabel grapeList "Castiglioni"
--- >>> getInformationByLabel grapeList "Le Petit Haut Lafitte"
--- >>> getInformationByLabel grapeList "Larrosa Rose"
+-- >>> getInfoByLabel grapeList "Castiglioni"
+-- >>> getInfoByLabel grapeList "Le Petit Haut Lafitte"
+-- >>> getInfoByLabel grapeList "Larrosa Rose"
 -- "Castiglioni is a Red wine from the region Tuscany in Italy. It is made from [\"Sangiovese\"] and has an alcohol level of 12.5%"
 -- "Le Petit Haut Lafitte is a Red wine from the region Bordeaux in France. It is made from [\"Cabernet-sauvignon\",\"Merlot\"] and has an alcohol level of 13.5%"
 -- "Larrosa Rose is a Rose wine from the region Rioja in Spain. It is made from [\"Garnacha\"] and has an alcohol level of 14.0%"
-getInformationByLabel :: [Label] -> String -> String
-getInformationByLabel (i@(Label (l, _, _, _)):ls) q =
-    if l == q
-        then show i
-        else getInformationByLabel ls q
-getInformationByLabel _ _ = "Not found"
+getInfoByLabel :: [Label] -> String -> String
+-- getInfoByLabel (i:is) l =
+--     if l == getLabel i
+--         then show i
+--         else getInfoByLabel is l
+-- getInfoByLabel _ _ = "Not found"
+getInfoByLabel is l =
+    foldr
+        (\ i is ->
+            if l == getLabel i
+                then show i
+                else is
+        )
+        "Not found"
+        is
