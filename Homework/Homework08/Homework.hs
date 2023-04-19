@@ -47,7 +47,8 @@ data Kind
     | Rose
     deriving (Show, Eq)
 
-data Wine = Wine
+data Wine
+    = Wine
     { getKind    :: Kind
     , getAlcohol :: Alcohol
     }
@@ -70,7 +71,8 @@ wines =
 -- Create a record type called "Label" that captures the grapes that are in a whine, the region its from,
 -- and it's kind. Notice that some wines are a blended combination of multiple grapes!
 -- Additionally, create for each of the described wine below a label.
-data Label = Label
+data Label
+    = Label
     { getLabel  :: String
     , getGrapes :: [Grape]
     , getRegion :: Region
