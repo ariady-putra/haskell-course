@@ -1,7 +1,8 @@
 import Data.List
 import System.CPUTime (getCPUTime)
-import System.Directory (doesFileExist, listDirectory)
-import Text.XHtml (thead)
+import System.Directory (doesFileExist, doesDirectoryExist, listDirectory)
+-- import Text.XHtml (thead)
+import Control.Monad
 
 {-
 We imported some functions that you'll need to complete the homework.
@@ -19,7 +20,8 @@ Define an IO action that counts the number of files in the current directory
 and prints it to the terminal inside a string message.
 -}
 
--- listFiles :: IO ()
+listFiles :: IO ()
+listFiles = listDirectory "." >>= mapM_ putStrLn
 
 {-
 -- Question 2 --
@@ -102,3 +104,34 @@ Below you can see an example output of how such a structure looks like:
 HINT: You can use the function doesFileExist, which takes in a FilePath and returns
 True if the argument file exists and is not a directory, and False otherwise.
 -}
+listFilesR :: String -> FilePath -> [FilePath] -> IO ()
+listFilesR s path (file:next) = do
+    putStrLn $ s ++ (
+        if next == []
+            then "└── "
+            else "├── "
+        ) ++ file
+    
+    let currPath = path ++ "/" ++ file
+    isDirectory <- doesDirectoryExist currPath
+    when isDirectory ( -- Control.Monad
+        do
+            files <- sort <$> listDirectory currPath
+            listFilesR (s ++
+                if next == []
+                    then "    "
+                    else "⎪   "
+                ) currPath files
+        )
+    
+    listFilesR s path next
+  
+listFilesR _ _ _ = return ()
+
+main :: IO ()
+main = do
+    let startDir = "."
+    putStrLn startDir
+    
+    files <- sort <$> listDirectory startDir
+    listFilesR "" startDir files
