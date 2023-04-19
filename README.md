@@ -6,7 +6,9 @@
 
 For a more detailed explanation, keep reading or watch the introduction video:
 [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=flat&logo=YouTube&logoColor=white)](https://youtu.be/H1vbUKMKvnM)
+[![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=flat&logo=YouTube&logoColor=white)](https://youtu.be/H1vbUKMKvnM)
 
+## How much should I study if I only wish to use Marlowe/Plutus?
 ## How much should I study if I only wish to use Marlowe/Plutus?
 
 In the [outline](#what-well-cover) below, there are clear stopping points (for both Marlowe and Plutus) where we deem you to know enough Haskell to effectively use the technology.
@@ -14,11 +16,14 @@ In the [outline](#what-well-cover) below, there are clear stopping points (for b
 ## How to read/watch the lessons
 
 To go through the interactive lessons, go to your chosen lesson's outline inside "[What we'll cover](#what-well-cover)" and click on the button that looks like the one below. If the page loads with a "500: Internal Server Error" just refresh it, and it should be fine. At the top, you will see a console that displays the progress of preparing your interactive lesson. During this time, you can scroll down and look at the lesson, that is displayed non-interactively.
+To go through the interactive lessons, go to your chosen lesson's outline inside "[What we'll cover](#what-well-cover)" and click on the button that looks like the one below. If the page loads with a "500: Internal Server Error" just refresh it, and it should be fine. At the top, you will see a console that displays the progress of preparing your interactive lesson. During this time, you can scroll down and look at the lesson, that is displayed non-interactively.
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/input-output-hk/haskell-course/HEAD?labpath=%2Flessons%2F01-Introduction-to-haskell.ipynb)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/input-output-hk/haskell-course/HEAD?labpath=%2Flessons%2F01-Introduction-to-haskell.ipynb)
 
 And to see the video, click on the button that looks like this:
 
+[![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=flat&logo=YouTube&logoColor=white)](https://youtu.be/H1vbUKMKvnM)
 [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=flat&logo=YouTube&logoColor=white)](https://youtu.be/H1vbUKMKvnM)
 
 ## To do the homework
@@ -40,6 +45,7 @@ And to see the video, click on the button that looks like this:
         |          |---- Homework02 (Homework for lesson 02)
         |          ...
         |
+        |-------- lessons (Lessons in Jupyter notebook format. Access through Binder.)
         |-------- lessons (Lessons in Jupyter notebook format. Access through Binder.)
                    |
                    |---- 1-Introduction-to-haskell
@@ -83,6 +89,7 @@ Everything else can be safely ignored
   - Basic syntax
   - Haskell Type system
   - Laziness
+  - Laziness
   - GHC (and GHCi)
 - GitPod
   - How to open and use GitPod
@@ -96,7 +103,17 @@ Everything else can be safely ignored
   - Variables in Haskell
     - Parameters in functions
     - Names/Definitions
+- Pragmatic intro to types
+- Type signature
+  - Function’s signatures
+  - Variables in Haskell
+    - Parameters in functions
+    - Names/Definitions
 - Infix and prefix functions
+- Data Types in depth
+  - Int, Integer
+  - Float, Double
+  - Rational
 - Data Types in depth
   - Int, Integer
   - Float, Double
@@ -120,6 +137,10 @@ Everything else can be safely ignored
 ### 4. Pattern matching and Case [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/input-output-hk/haskell-course/HEAD?labpath=%2Flessons%2F04-Pattern-matching.ipynb) [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=flat&logo=YouTube&logoColor=white)](https://www.youtube.com/watch?v=sQPGN4b95DU)
 
 - What is pattern matching
+- Pattern matching on
+  - Function implementations
+  - Lists
+  - Tuples
 - Pattern matching on
   - Function implementations
   - Lists
@@ -218,7 +239,7 @@ Everything else can be safely ignored
 - The `main` action
 - Concepts and syntax recap
 
-### 12. Pragmas, Modules, and Cabal
+### 13. Pragmas, Modules, and Cabal
 
 - Prelude
 - pragmas/extensions

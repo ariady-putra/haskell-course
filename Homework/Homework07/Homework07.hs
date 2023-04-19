@@ -22,3 +22,6 @@ f2 x =
 
 -- Question 5
 -- Investigate the numeric type classes to figure out which behaviors they provide to change between numeric types.
+
+-- We could use and combine several behaviors: `fromInteger`, `toInteger`, and `fromRational`. Although other
+-- type classes we didn't cover provide `round` `ceiling`, etc. that we can also use to go from fractions to Integrals.

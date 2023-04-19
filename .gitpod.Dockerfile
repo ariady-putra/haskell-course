@@ -9,4 +9,4 @@ RUN ghcup install hls
 RUN ghcup install stack
 
 # Install zlib
-RUN sudo apt install -y zlib1g
+RUN apt install zlib1g
