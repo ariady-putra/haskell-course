@@ -4,9 +4,9 @@
 -- Write a function that takes in an integer n and returns a list of the 
 -- first n fibonacci numbers. Use the function scanl to achieve this.
 fibonacci :: Integer -> [Integer]
-fibonacci n = init $ foldl (\ z _ -> z ++ [sum . take 2 . reverse $ z]) [1] [1..n]
--- >>> fibonacci 8
--- [1,1,2,3,5,8,13,21]
+fibonacci n = foldl (\ z _ -> z ++ [sum . take 2 . reverse $ z]) [1] [2..n]
+-- >>> fibonacci 10
+-- [1,1,2,3,5,8,13,21,34,55]
 
 -- Question 2
 -- Create a cabal project with an app/ folder that contains Main.hs and a lib/
