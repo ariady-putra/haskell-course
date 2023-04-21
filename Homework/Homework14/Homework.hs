@@ -22,13 +22,9 @@ main = do
 
 extractRecord :: String -> [String] -> Maybe String
 extractRecord field records =
-    case find (\ f ->
-        case f of
-            Nothing -> False
-            _       -> True
-        ) $ map (extractField field) records of
-            (Just f) -> f
-            _ -> Nothing
+    case find (/=Nothing) . map (extractField field) $ records of
+        (Just f) -> f
+        _ -> Nothing
 
 extractField :: String -> String -> Maybe String
 extractField field record =
