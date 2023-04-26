@@ -1,16 +1,18 @@
+import Control.Monad
 import Language.Haskell.Interpreter
 import System.IO
 
 main :: IO ()
-main = do
-    hSetBuffering stdout NoBuffering
-    
-    putStr "Input an integer: "
-    n <- read <$> getLine
-    
-    putStrLn $ "Combinations of " ++ show [[1..n] | _ <- [1..n]] ++ " are:"
-    result <- combinationsOf n
-    putStrLn $ show result
+main = hSetBuffering stdout NoBuffering
+    >> forever ( -- loop until invalid input
+        do
+            putStr "Input an integer: "
+            n <- read <$> getLine
+            
+            putStrLn $ "Combinations of " ++ show [[1..n] | _ <- [1..n]] ++ " are:"
+            result <- combinationsOf n
+            putStrLn $ show result
+        )
 
 -- Question 1
 -- Rewrite the following code below that used do-notation to equivalent code that does not use do-notation. 
