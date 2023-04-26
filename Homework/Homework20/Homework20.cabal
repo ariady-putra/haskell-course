@@ -1,0 +1,16 @@
+cabal-version:      2.4
+name:               Homework20
+version:            0.1.0.0
+
+author:             Ariady Putra
+maintainer:         ariady.putra@gmail.com
+
+extra-source-files: CHANGELOG.md
+
+executable Homework20
+    main-is:          Homework.hs
+
+    build-depends:    base ^>=4.16.1.0
+                 ,    hint
+    hs-source-dirs:   app
+    default-language: Haskell2010
