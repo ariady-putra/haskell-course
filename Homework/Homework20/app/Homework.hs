@@ -42,11 +42,11 @@ ioExample' =
 
 listComprehension :: Int -> String
 listComprehension n =
-    let l = foldr (\ x next -> 'x' : show x ++ comma next) "" ls
-        r = foldr (\ x next -> 'x' : show x ++ "<-" ++ show ls ++ comma next) "" ls
+    let l = foldr (\ x next -> 'x' : show x ++ comma next) "" ns
+        r = foldr (\ x next -> 'x' : show x ++ "<-" ++ show ns ++ comma next) "" ns
     in "[[" ++ l ++ "]|" ++ r ++ "]"
     where
-        ls = [1..n]
+        ns = [1..n]
         comma next = (
             if next == []
                 then ""
