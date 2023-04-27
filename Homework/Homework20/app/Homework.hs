@@ -8,8 +8,8 @@ main = hSetBuffering stdout NoBuffering
         do
             putStr "Input an integer: "
             n <- read <$> getLine
-            
-            putStrLn $ "Combinations of " ++ show [[1..n] | _ <- [1..n]] ++ " are:"
+            let ns = [1..n]
+            putStrLn $ "Combinations of " ++ show [ns | _ <- ns] ++ " are:"
             result <- combinationsOf n
             putStrLn $ show result
         )
@@ -49,11 +49,9 @@ listComprehension n =
     in "[[" ++ l ++ "]|" ++ r ++ "]"
     where
         ns = [1..n]
-        comma next = (
-            if next == []
-                then ""
-                else ","
-            ) ++ next
+        comma next = if next /= []
+            then "," ++ next
+            else next
 -- >>> listComprehension 5
 -- "[[x1,x2,x3,x4,x5]|x1<-[1,2,3,4,5],x2<-[1,2,3,4,5],x3<-[1,2,3,4,5],x4<-[1,2,3,4,5],x5<-[1,2,3,4,5]]"
 
