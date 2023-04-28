@@ -9,6 +9,7 @@ import GHC.Generics
 import Data.Maybe
 import Data.ByteString.Lazy as LBS
 import Network.HTTP.Conduit
+import Control.Concurrent.Async
 import Control.Monad
 
 -- Question 1
@@ -170,7 +171,7 @@ test :: IO ()
 test = do
     userJson <- LBS.readFile "user.json"
     let maybeUser = decode @User userJson
-    Prelude.putStrLn $ show maybeUser
+    print maybeUser
 
 getUserFromAPI :: Int -> IO LBS.ByteString
 getUserFromAPI n = do if n `Prelude.elem` [1..10] 
@@ -182,5 +183,11 @@ getUserFromAPI n = do if n `Prelude.elem` [1..10]
 -- Replace this main function to get an user number between [1..10] and return return the parsed User from the api.
 
 main :: IO ()
-main = (forM [1..10] $ (decode @User <$>) . getUserFromAPI) -- IO [Maybe User]
-    >>= mapM_ ((>> Prelude.putStrLn "") . Prelude.putStrLn . show . fromJust)
+main = do
+    lsMaybeUser <- forConcurrently [1..10] $ decodeUserJson . getUserFromAPI
+    forM_ lsMaybeUser (\ maybeUser ->
+        do
+            print $ fromJust maybeUser
+            Prelude.putStrLn ""
+        )
+    where decodeUserJson = (<$>) $ decode @User
