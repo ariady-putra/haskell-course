@@ -23,8 +23,10 @@
 -- Defined data
 newtype Nums = Num String
 instance Semigroup Nums where
-    (Num a) <> (Num "") = Num a
-    (Num a) <> (Num b)  = Num $ a ++ "-" ++ b
+    (Num a) <> (Num b)
+        | a == ""   = Num b
+        | b == ""   = Num a
+        | otherwise = Num $ a ++ "-" ++ b
 
 type Numbers = [Nums]
 type Probabilities = [Double]
