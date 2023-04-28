@@ -25,8 +25,8 @@ byteStringToInteger bs =
 
 q1 = do
     bs <- BS.getLine
-    putStrLn . show $ BS.foldr ((:) . toInteger) [] bs
-    putStrLn . show $ byteStringToInteger bs
+    print $ BS.foldr ((:) . toInteger) [] bs
+    print $ byteStringToInteger bs
 
 {-
 Create a function that converts Integers into the binary representation using a base 256 conversion.

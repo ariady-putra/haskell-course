@@ -11,7 +11,7 @@ main = hSetBuffering stdout NoBuffering
             let ns = [1..n]
             putStrLn $ "Combinations of " ++ show [ns | _ <- ns] ++ " are:"
             result <- combinationsOf n
-            putStrLn $ show result
+            print result
         )
 
 -- Question 1
